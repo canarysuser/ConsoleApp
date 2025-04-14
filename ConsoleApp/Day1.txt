@@ -1,0 +1,433 @@
+.NET 
+- Computing Model 
+- provide Unified experience to developers 
+- build internet -based distributed applications 
+- open specs of the internet [ http/xml/json/....] 
+
+
+.NET Initiative 
+- .NET Framework 
+	- how to develop the applications, compile and the execution env 
+- .NET Servers 
+	- where the deploy the applications [ Windows OS, Host Integration Servers, SharePoint,
+		.... ] 
+- .NET Services 
+	- how to interact with the applications 
+		- applications need to provide Endpoints [ Address, Bindings, Contract ]
+		- WCF [ Windows Communication Framework ] , Web APIs [ REST ] 
+
+
+
+.NET Framework 
+--> Common Language Infrastructure [ CLI ] 
+--> Base Class Library (BCL) / Framework Class Library (FCL) 
+	- common library supported by all languages 
+	- 
+--> ASP.NET Web Communications [ IIS, Kestrel, HTTP.sys ] 
+
+Common Language Infrastructure [ CLI ] 
+- ECMA specs [ open specs ] 
+	- Microsoft - Windows - .NET 
+	- OSF	- Linux  - Mono 
+	- Microsoft - FreeBSDUnix - Rotor - 90% of windows.net source code - discarded 
+	- 800MB of installation 
+
+-> 2015 - Compact version of .NET Framework - .NET Core -> 5MB of installation 
+	- target machines - devices [ phones, tablet, IOT, TV, .... ] 
+	- .NET Core - available for Windows, Linux, MacOS, Android, iOS, tvOS, IoT, 
+	- .NET 5 - .NET Core v5  - .NET 6/7/8/9
+	- .NET Framework - v4.8 - v1.0, v1.1, v2.0, v3.0, v3.5, v4.0/1/2/4/5/6/7/8
+	- Open Source-industry contribution - .NET Core 
+	- Proprietary source code - Microsoft - .NET Framework 
+	
+- Common Type System [ CTS ] 
+- Common Language Specifications [ CLS ] 
+- Common Intermediate language [ CIL/ IL / MSIL ] 
+- Metadata 
+- Virtual Execution System/Common Language Runtime [ VES/CLR] 
+
+
+Common Type System 
+- Type Classification 
+	- Value Types 
+		- holds the values, 
+		- stack locations 
+		- Inherits from System.ValueType 
+		- Built-In Types, Enums, Structs 
+		- promotable types - can be moved from stack to heap/back
+	- Ref Type 
+		- holds the pointers/ref, 
+		- heap location
+		- Class, Arrays, Strings, Interfaces, Delegates, Pointer
+			
+	- System.Object is the base class in .NET 
+	- Every type/class in .NET inherits directly/indirectly from System.Object 
+	- System.ValueType is the base class for all Value Types 
+	
+	int [] arr = new int [100]; 
+	int i=100; - Value Type
+	arr[0] = i; 
+	Converts the value type into an System.Object object type - Boxing 
+		- this object is placed on the heap 
+		- heap address is held by arr[0] ; 
+
+	int x = arr[0]; // UNBOXING 
+
+- BUilt-IN types 
+	- types defined by .NET framework - languages have to provide alias names to the types
+	- languages cannot (re)define these types
+.NET type			C#		VB 
+System.Int32 			int		Integer 
+System.Int16			short		Short
+System.Int64			long		Long
+System.Single			float		Single 
+System.Double			double		Double 
+System.Decimal			decimal		Decimal
+System.Boolean			bool		Boolean
+System.Char(2-byte)		char		Char 		-UNICODE 0-65536 
+System.Byte(1-byte)		byte		Byte		-ASCII 0-255 
+System.SByte			sbyte				-ASCII -127 to +128 
+System.UInt16/UInt32/UInt64	ushort/uint/ulong
+System.DateTime			--		Date, Time 
+===============================================================> VALUE TYPES - Structs
+System.Object			object		object 
+System.String			string		String 
+===============================================================> REFERENCE TYPES - Class
+
+
+	string s = ""; 
+	System.String s = ""; 
+
+- Common Language Specifications [ CLS ] 
+-> Collection of compiler rules 
+-> for compiler developers/extenders/framework writers 
+-> lower bound of array should be zero 
+-> internal type of Enum should be integral value [ byte/short/int/long ] 
+
+Common Intermediate Language 
+- CIL - every lang compiler should compile its code into this format. 
+- IL is the only language supported by .NET 
+- like the Assembly language - Mnemonic based Opcodes [ ADD, MOD, MOV, LDSTR, NOP, RET, .... ] 
+- 
+
+Metadata 
+- information about the type 
+- information is stored within the same executable [ assembly ] 
+- Self-Describing components 
+
+
+Common Language Runtime [ CLR ] 
+- executes any code based on CTS, supports CLS, generates IL, emits Metadata 
+- Managed Execution 
+	- CLR provides all resources required by the code 
+		- Threading, Memory, File, Logs, Network, Debug, Exception Handling 
+			
+- Is an Virtual OS on top of the physical (installed) OS 
+- Converts the IL instructions into Machine/Native code and executes it on the physical OS 
+	- Converts using JiT compilers - OptiJiT/EconoJiT/Pre-compiled
+	- this compilation is dynamic - when a method IL is called, JiT compilation happens 
+- Language Compilers convert High-level code into IL instructions 
+
+
+C# 
+- Object-Oriented programming language 
+- new language based on simplicity of C++ and OO concepts of Java 
+- ECMA specs 
+	- Microsoft implementation of ECMA is called Visual C# 
+- case-sensitive lang 
+- C# Compiler version 7.3 on .NET Framework 
+- C# Compiler version 12 on .NET Core
+
+
+in VS, to execute the application, use the function keys: 
+	F5 - start with debugging support 
+	CTRL + F5 - start without debugging support 
+	SHIFT + F5 - terminate/stop execution 
+
+	F9 - to set/remove debugging breakpoints 
+	F10 - to step over the breakpoint function 
+	F11 - to step into the breakpoint function 
+	
+Code compilation is done using csc.exe 
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\
+
+
+C# program structure 
+using directives [ optional ] 
+pre-processor directives #XXX [ optional ] 
+comments -> // or /* ... */ 
+namespace declarations [ optional ] 
+class declaration - mandatory
+	- methods and other member declarations [ required ] 
+
+- C# casing conventions 
+	1. PascalCasing - First letter of each word is capitalized  
+			- Namespaces, Class, Structs, Methods, Properties, Delegates, Events, 
+				
+	2. camelCasing 	- first letter of the first word is lowercased, rest are capitalized
+			- used for parameter declarations and local variables 
+	3. _Convention 	- used for private class fields 
+	4. FULL_CAPS	- used for constants - not to used anymore 
+	
+Input/Output Statements 
+1. Console.WriteLine - prints a sequence of chars followed by newline \n char 
+2. Console.Write     - prints a sequence of chars 
+3. Console.ReadLine  - reads a sequence of chars terminated by the \n char - returns a string
+4. Console.Read	     - returns the ASCII value of one char pressed as integer 
+5. Console.ReadKey   - acknowledges a key press. 
+
+Escape Sequences of C/C++ 
+--> \n, \t, \\, \b, \a, \", \r, \f, 
+
+Output formatting: positional arguments and format 
+Console.WriteLine(10 + " + " + 20 + " = " + (10+20));  ==> 10 + 20 = 30 
+Console.WriteLine("{0} + {1} = {2}", 10, 20, (10+20)); ==> 10 + 20 = 30 
+Console.WriteLine("{0} - {1} = {1}", 20, 10); ==> 20 - 10 = 10 
+//Formatted output - currency, number, datetime, ... 
+Console.WriteLine("{0:C} + {1:N} = {2:N3}", 100.1, 1234.56, 1334.66) => 
+		$100.10 + 1,234.56 = 1,334.660
+
+//Templated Strings with $ 
+$ used as interpolated strings { expression is evaluated }
+ Console.WriteLine($"{100.1:C} + {1234.56:N}={13345.66:N3}");
+==> Console.WriteLine(string.Format({0:C} + {1:N} = {2:N3}", 100.1, 1234.56, 1334.66));
+
+
+Variables and Data types 
+<dataType> {Identifier} [=<initial_value>]; 
+datatype -> valid .NET Type including the builtIn types 
+Identifier -> name of the variable which can begin with _,Alphabet,@, can contain numbers,
+		max length is 256 
+- compiler requires the variables to be initialized before usage 
+
+	int i; 
+	Console.WriteLine(i); //Compiler throws error 
+	int z=10; 
+	z=10; 
+	Console.WriteLine(z); 
+
+- reserved words can also be used as variable names preceeded with @ symbol 
+	int @while = 10; 
+	int while=10; //not allowed 
+
+
+Operators 
+1. Arithmetic Operators  =>   +, -, *, /, % (modulus) 
+2. Relational 		 =>   >, <, >=, <=, ==, != 
+3. Logical and Bitwise	 =>   &, |, ^, &&, ||, >>, <<, ~ 
+	10 	-> 0000 1010
+	11	-> 0000 1011 
+				10 & 11 -> 0000 1010 
+				10 | 11 -> 0000 1011 
+				10 ^ 11 -> 1111 0101
+				~10 -> 1111 0101
+
+	10 >> 2 -> 0000 0010  => 2   - right shift
+	10 << 2 -> 0010 1000  => 40  - left shift 
+
+	(condn1) && (condn2) -> T && T = T, otherwise false 
+	(condn1) || (condn2) -> F || F = F, otherwise true 
+	
+4. Unary Operators 	=> ++, --, - 
+5. Ternary Operators 	=> ?: 
+6. Assignment Operators	=> =, +=, -=, *=, /=, %= 
+7. Member access 	=> . (dot) 
+8. Arrays		=> [ ] 
+9. Null based operators 
+	?? -> Null coalescing operator      vari1 ?? null  --> if(vari1!=null) use vari1 else null
+	! (null forgiving operator)  - suppress null warnings 
+		object obj = someOtherObject!; //compiler warnings 
+10. Lambda expression	=>  => (tends to ) 
+11. Type Checking opers => typeof() - (value types), is (reference types) 
+		if(var is MyClass) 
+12. Type Conversion 	=> () - value types and reference types 
+			   as - can be used with ref types 
+	MyClass c = obj as MyClass => if it cannot convert, assigns null, no exceptions thrown 
+	MyClass c = (MyClass) obj => throws exceptions if it cannot convert. 
+
+
+Program Control statements 
+1. if ( condn ) 
+	//statement 
+2. if ( condn ) 
+   { 
+	//statement(s) 
+   } 
+3. if (condn) 
+	//statement
+   else 
+	//statement 
+4. if ( condn) 
+   { //statement(s) } 
+   else if (condn ) 
+   { //statement(s) } 
+   ...... 
+   else 
+   { //statement(s) } 
+5. switch (expr) { 
+	case label1 when (condition): 
+		//statement(s) 
+		break; || goto; || return;
+	case label2: 
+	case label3: 
+	case label4: 
+		//statement(s) 
+		break; 
+	default: 
+		//statement(s) 
+		break;
+   } 
+6. do { } while (condn); 
+7. while ( condn ) { } 
+8. for(init; condn; expr;) { } 
+9. foreach (datatype variable in collection) { } 
+10. continue; 
+11. return; 
+12. yield; 
+13. using ( ) block 
+14. lock () statement 
+15. throw statement 
+
+
+
+Methods 
+[visibility] [modifiers] <returnType> <functionName>([<arg_list>]) { } 
+where 
+visibility - public, private, protected [ derived], internal [ assembly ], protected internal
+modifiers - static, virtual, override, new, abstract, sealed 
+returnType = valid .NET Type 
+arg_list = [ref|out|params] <dataType> <argName>[=<defaultValue>], .....n 
+
+1. Call By Value 	- copy of the value is passed [ new object ] 
+2. Call By Reference 	- copy of the address is passed 
+			- use the keyword "ref" in actual and formal arg list 
+			- parameter must be initialized before usage 
+			- called function may or may not change the parameter value 
+3. Call By Out		- function to generate a value and assign to the parameter 
+			- simulate multiple returns from a function 
+			- use the keyword "out" in actual and formal arg list 
+			- out parameters need not be initialized. 
+4. Call By params 	- 'n' number of arguments can be passed to a function 
+			- "params" keyword is used in the formal argument list. 
+			- dynamically creates an array with the number of arguments passed. 
+			- should be the last argument in the parameter list 
+			- only one params parameter is allowed in the parameter list 
+5. Optional arguments 	- arguments assigned with default values 
+6. Named arguments 	- pass arguments by name rather than by position 
+			
+
+
+Object Oriented Concepts 
+Object characteristics -> Identity (name), State (fields/data), Behaviors (function/methods)
+Class 
+	- classification of objects with similar characteristics 
+
+Class in C#
+- can contain fields, methods, properties, indexers, events, constructors, destructors 
+- class always inherits from System.Object 
+- is a ref type 
+- can contain parameterless or parameterized constructors or initializers
+- can also contain destructors or finalizers 
+- can be inherited further by any other class by default 
+- all class data members are initialized to the default values 
+- all class fields are created on the heap 
+- class can implement multiple interfaces 
+- class cannot inherit from multiple base class 
+- Single and Multi-level inheritance is supported 
+- Multiple, Diamond,...... are not supported in .NET 
+
+Object Model - Grady Booch - "OOAD with applications"
+Major Elements - required to be supported by truly object oriented languages 
+1. Abstraction 		- extract essential information wrt to problem domain 
+2. Encapsulation 	- hide the representation [ memory ] behind the implementation [functions]
+3. Hierarchy - INheritance - Ranking and Ordering of types - one root element should exist
+4. Modularity 		- compartmentalize the code into modules/namespace/projects 
+
+Minor Elements - may be supported by OO languages 
+1. Concurrency - concurrent access should be supported 
+2. Typing - Strongly typed language preferred over weakly typed language 	
+		- well defined conversion functions 
+3. Persistence - preserving the state of the object - Serialization 
+
+
+Properties 
+- are special type of methods which provide read/write access to the fields 
+- Accessor/Mutator methods - Getter/Setter methods 
+- used to encapsulate the fields 
+
+private int _id; 
+public int Id 
+{
+	get { return _id; } read operation -- accessor
+	set { _id = value; } write operation  -- mutator 
+}
+Compiler converts the above statement into 2 functions 
+1. public int get_Id() { return _id; } 
+2. public void set_Id(int value) { _id = value } 
+
+obj.Id = 100; => obj.set_Id(value:100);
+C.WL(obj.Id) => C.WL(obj.get_Id()) 
+
+
+INheritance 
+1. Non-private members of the base are available to the derived class 
+2. By default, the base class parameterless(default) constructor is always called before the derived class object is created. 
+3. Single and multi-level inheritance is supported. 
+
+
+Visibility		Declaring	Derived	 Within 	Outside
+			Class		Class	 Assembly	Assembly
+----------------------|------------|-----------|------------|------------|
+1. private 		Yes		No	 No		No	
+2. public		Yes		Yes	 Yes		Yes
+3. protected		Yes		Yes	 Yes to derived Yes to derived 
+4. internal		Yes		Yes	 Yes		No
+5. protected internal	Yes		Yes	 Yes 		Yes to derived
+
+
+Prevent inheritance - sealed keyword 
+
+an object can access its own members. 
+
+Derived object contains an implicit pointer to the Base class object -> referred to as "base" 
+
+abstract 
+- class 
+	- force inheritance for usage 
+	- is considered as partially implemented
+
+Account class with Withdraw() method 
+2 types of accounts - Savings and Current 
+	Withdrawal rules - Savings -> Minimum balance should be 5000 
+	Withdrawal rules - Current -> Minimum balance should be 10000 
+
+abstract class Account
+	abstract Withdraw(amount) = 0; No implementation 
+	void Deposit()  Balance +=amount;  		
+
+class Savings 
+	override Withdraw(amount) Balance-amount > 5000;
+class Current 
+	override Withdraw(amount) Balance-amount > 10000;
+
+
+void ProcessSteps 
+	FetchRawData()
+	CleanTheData()
+	FilterTheData()
+	SortTheData()
+	ComputeResult()
+
+SOLID - SRP, OCP, LSP, ISP, DIP  - OO Design Principles 
+LSP - Substitute Derived references with Base reference and code should not break 
+
+
+
+
+
+
+
+
+
+
+
