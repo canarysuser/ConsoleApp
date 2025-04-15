@@ -394,8 +394,19 @@ Derived object contains an implicit pointer to the Base class object -> referred
 abstract 
 - class 
 	- force inheritance for usage 
-	- is considered as partially implemented
+	- is considered as partially implemented type
+	- cannot be instantiated directly 
+	- can contain abstract and non-abstract members
+	- abstract members should be implemented in the derived class
+	- can contain constructors, properties, methods, fields, events, destructors 
+- method
+	- forces the derived class to implement the method 
+	- no implementation in the base class 
+	- child class should use override keyword to implement the method
+	- cannot be static, sealed, private
 
+
+	
 Account class with Withdraw() method 
 2 types of accounts - Savings and Current 
 	Withdrawal rules - Savings -> Minimum balance should be 5000 

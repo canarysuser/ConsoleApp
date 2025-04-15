@@ -43,8 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractImplementation.cs" />
+    <Compile Include="DelegateEvents.cs" />
+    <Compile Include="Delegates1.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="ExceptionHandling.cs" />
     <Compile Include="Inheritance.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="MemoryManagement.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Day1.txt" />
+    <Content Include="Day2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

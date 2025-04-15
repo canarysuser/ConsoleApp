@@ -1,0 +1,225 @@
+﻿Sealed 
+- class 
+	- prevents the class from being inherited
+	- "struct" is a sealed class inherits from System.ValueType 
+	- struct keyword creates a sealed ValueType class 
+- methods 
+	- prevents further overriding of the virtual methods 
+
+
+Interfaces
+- define a pure virtual type
+- contains the declarations of methods, properties, events, and indexers
+- does not contain any implementation
+- can be implemented by any class or struct
+- cannot contain fields, constructors, destructors, static members, or operators
+- can contain static members
+- can contain default implementations - v9.0 of C#
+- usage 
+	- can be used to define a contract for classes and structs
+	- can be used to define a common interface for different classes and structs
+	For Ex: IList { Add(); Remove(); Clear(); }
+	class X : IList
+	{
+		public void Add() { }
+		public void Remove() { }
+		public void Clear() { }
+	}
+	class Y : IList
+	{
+		public void Add() { }
+		public void Remove() { }
+		public void Clear() { }
+	}
+	- restrict the users access to the system
+	- enforces Encapsulation 
+- cannot be instantiated directly 
+- a class or struct can implement multiple interfaces
+- an interface can inherit from multiple interfaces
+- interface can be implemented implicitly or explicitly 
+- all interface members are implicitly public - cannot be declared as public 
+- if a class is not implementing an interface member, the class should be marked abstract and provide abstract implementation
+
+
+Memory Management 
+- CLR uses a garbage collector (GC) to manage memory
+- GC is responsible for allocating and deallocating memory for objects
+- GC uses a generational approach to manage memory
+- GC divides memory into three generations: 
+	- Generation 0: short-lived objects, recently created objects,
+	- Generation 1: long-lived objects, objects which survived the first collection attempt
+	- Generation 2: very long-lived objects, objects which survived the second/multiple collection attempts
+	- GC uses a mark-and-sweep algorithm to identify and collect unused objects
+	- Gen 0 is on the L2 cache, Gen 1 and Gen 2 are on the main memory 
+	- Gen 1 is the same size as Gen 0. 
+	- Gen 2 is the rest of the heap ^2GB - upto physical RAM available based on the processor architecture 
+	- When there is memory pressure (full), the GC will run a collection
+	- Mark the referenced objects and move it to the Gen 1. Sweeps Gen 0 clean, creates the new object in Gen 0 
+	- If the Gen 1 is full, the GC will run a collection
+	- Mark the referenced objects and move it to the Gen 2. Sweeps Gen 1 clean, 
+		Marks referenced objects inGen 0, moves it to Gen 1, sweeps Gen 0 clean, creates the new object in Gen 0 
+	- If the Gen 2 is full, the GC will run a collection and compaction 
+	- Rearrange all referenced objects towards the beginning of the heap, creating free space towards the end of the heap
+	- Mark the referenced objects and move it to the Gen 2. Sweeps Gen 1 clean, 
+		Marks referenced objects inGen 0, moves it to Gen 1, sweeps Gen 0 clean, creates the new object in Gen 0 
+	- If no space in Gen 2, Gen 1 and Gen 0 - throws an OutOfMemoryException and terminates execution 
+	- GC is non-deterministic - cannot predict when the GC will run
+	- GC will run when called Explicitly or when the system is low on memory or when the app is terminating 
+	- GC.Collect() - forces the GC to run
+
+
+Destructors
+- Obtained unmanaged resources like Files, Network, Logging, ..... 
+- Safe disposal of these resources 
+- Destructor is a special method that is called when an object is being removed from memory
+- Destructors are also called as finalizers 
+- Defined using the ~ operator
+- Cannot be called directly
+- Destructors are invoked by the GC. 
+
+
+
+MyClass m = new MyClass(); //obtained a file handle 
+m.Close(); //unmanaged resource is disposed
+m = null; //unmanaged resource is not disposed
+//GC will not run immediately
+
+1. When the object is created, the GC makes an entry of that in the finalizer list. 
+	LIst of objects on which the GC has to run destructors
+2. When the object is no longer referenced and the GC runs, 
+	- the GC moves the object to the next generation 
+	- Makes an entry of the object into the fReachableQueue 
+		Queue of objects that are reachable and needs to invoke the destructors
+	- GC Cycle completes without deleting the object. 
+3. GC maintains a thread which the monitors the fReachableQueue for objects - awakens 
+4. GC Thread 
+	- Build the object graph 
+	- Invokes the Destructor on that object and other objects in the graph (if present)
+	- The object is not removed/deleted from the heap
+5. The GC thread returns back to pick the next item in the queue or goes to Sleep state. 
+6. Next GC cycle will clean up the object 
+
+
+.NET provides an interface called IDisposable { void Dispose(); }
+- Dispose is a normal method on the class - which needs to be called explicitly
+- Dispose method is used to release unmanaged resources and is supposed to be the last method on the object. 
+
+
+
+Exception Handling
+- Exceptions are runtime errors that occur during the execution of a program
+- Exceptions can be anticipated or unanticipated 
+- Anticipated exceptions are those that can be handled by the program
+- Handling is done using exception filters 
+- All exceptions in .NET derive from the System.Exception class
+- Custom Exception - user defined exception classes should derive from the System.Exception class
+
+- Exception handling is done using try-catch-finally blocks
+- try block contains the code that may throw an exception
+- catch filters/block contains the code that handles the exception
+- finally block contains code that runs after either the try or catch block completes. 
+- finally block is used to release resources or perform cleanup operations - Dispose() called.
+
+CLR handles exceptions in 2 Phases 
+1. First Phase - CLR Identifies the filter for the exception 
+	- CLR checks whether a Debugger is attached to the running code [ VS Debugger] - the control transfers to the debugger
+	- If the debugger is not attached, the CLR checks whether the exception is handled by the current function 
+	- If the exception is not handled, the CLR checks whether the exception is handled by the calling function
+	- till it reaches the Main() entry point. 
+	- If no handlers are found, the CLR notifies the Windows Error Reporting Service (WERS)
+2. Second Phase - CLR handles the exception 
+	- CLR creates an Exception object and populates it with the exception information
+	- CLR creates a stack trace of the exception
+	- carefully unwinding the stack - does not execute the subsequent stack instructions. 
+	- CLR invokes the first catch block that matches the exception type
+	- CLR Executes the finally block, if present
+	- If nothing matches, the CLR hands over the exception object to the WERS and terminates the process. 
+	- WERS generates a Event Log and logs the error. 
+
+Exception Handling Blocks can be written as: 
+1. try { ... } catch (Exception ex) {...}
+2. try { ... } finally { .... }
+3. try { ... } catch (Exception ex) { ... } finally { ... }
+4. try { ... } catch (Exception ex) { ... } catch (Exception ex) { ... } finally { ... }
+5. try { ... } catch (Exception ex) { ... } catch (Exception ex) { ... } catch (Exception ex) { ... }
+
+If there are multiple catch blocks, the exception filters should be written in the reverse order of the exception hierarchy.
+- Innermost exception should be caught first and the outermost exception should be caught last.
+For Ex: 
+System.Exception is the base class for all exceptions in .NET
+class MyException : System.Exception { } 
+class SubException : MyException { } 
+
+try { } 
+catch (SubException ex) { ... } // innermost exception
+catch (MyException ex) { ... } // outermost exception
+catch (System.Exception ex) { ... } // base class exception  
+finally { } 
+
+
+Delegates and Events 
+- Delegates are type-safe function pointers
+- Function pointers provides extensibility endpoints to the application 
+- Function pointer holds the address of the target function 
+- Function pointer can invoke any function which matches its own signature 
+- Delegate helps in defering the execution of the function 
+- Delegates are reference types 
+- System.Delegate is the type in .NET - represents the function pointer 
+- CLR writes the Delegate class code for us. 
+- System.MulticastDelegate is a class that inherits from System.Delegate
+- MulticastDelegate is a delegate that can hold multiple function pointers
+- Delegates are first class objects - can be passed as parameters, returned from functions, and assigned to variables
+- 3 steps to create a delegate
+1. Declaration		: Declare a delegate type
+2. Instantiation	: Create an instance of the delegate
+3. Invocation		: Call the delegate
+
+1. Declaration 
+[visibility] delegate <returnType> delegateName([<parameterList>]);
+- Delegate declaration is similar to a method declaration
+- Compiler converts the above declaration to a class 
+public delegate int MyDelegate(int a, int b);
+public class MyDelegate : System.MulticastDelegate 
+{
+	public MyDelegate(object target, IntPtr method);
+	public int Invoke(int a, int b);
+	public IAsyncResult BeginInvoke(int a, int b, AsyncCallback callback, object state);
+	public int EndInvoke(IAsyncResult result);
+	
+}
+2. Instantiation 
+- Delegate is instantiated using the new keyword
+- Need some functions which matches the delegate signature 
+- Pass the address of the function to the delegate constructor 
+- The address of the function is got by passing the name of the function without the () 
+-> IL instructions CALL (invoke object methods), CALLVIRT (invoke virtual methods), LDFTN (loads function) 
+For Ex: 
+static int DoWork(int a, int b) { return a + b; } 
+MyDelegate md = new MyDelegate(DoWork);
+// Compiler passes the object as the first parameter if the function is a non-static method
+// Complier passes null as the first parameter if the function is a static method
+// Compiler passes the address of the function as the second parameter
+
+3. Invocation
+- Delegate is invoked using the () operator
+- can be invoked like a function or by using the object.Invoke() method
+For Ex: 
+md(10,20);			==> compiler converts this line to md.Invoke(10,20);
+md.Invoke(10,20);
+
+
+class A 
+{
+	Mapper.Notify();
+}
+
+class Mapper 
+{
+	Notify() { BObj.Fn(); }
+	Register(BObj) { BObj = new B(); }
+}
+
+class B 
+{
+	Mapper.Register();
+}

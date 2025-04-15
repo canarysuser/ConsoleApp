@@ -30,7 +30,14 @@ namespace ConsoleApp
             emp2.Id = 98765; //emp2.set_Id(98765)
             emp2.Show();*/
 
-            Inheritance.Test();
+            //Inheritance.Test();
+            //AbstractImplementation.Test();
+            //Interfaces.Test();
+            // MemoryManagement.Test();
+            //ExceptionHandling.Test();
+            //Console.WriteLine("After the exceptionhandler is executed."); 
+            //Delegates1.Test();
+            DelegateEvents.Test();
         }
         static void ArraysTest()
         {

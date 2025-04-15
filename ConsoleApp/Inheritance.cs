@@ -34,7 +34,7 @@ namespace ConsoleApp
                 .AppendLine($"Protected Internal Field: {_pI}");
             Console.WriteLine(sb.ToString());
         }
-        public abstract void Hide(); 
+        //public abstract void Hide(); 
     }
     public class DerivedClass : BaseClass
     {
@@ -57,15 +57,15 @@ namespace ConsoleApp
                 .AppendLine($"Protected Internal Field: {_pI}");
             Console.WriteLine(sb.ToString());
         }
-        public override void Hide() { }
+       // public override void Hide() { }
     }
 
     public class Inheritance
     {
-        static void DoWork(BaseClass dc)
+       /* static void DoWork(BaseClass dc)
         {
             dc.Hide();
-        }
+        }*/
         public static void Test()
         {
             
@@ -86,7 +86,7 @@ namespace ConsoleApp
             //bc1 = dc1.base; 
 
             bc1.Show(); //==> print the derived class Show() 
-            DoWork(dc1);
+            //DoWork(dc1);
 
         }
     }
